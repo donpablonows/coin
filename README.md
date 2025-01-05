@@ -12,7 +12,7 @@
 
 **COIN** is a state-of-the-art Bitcoin address generator that leverages CUDA acceleration and advanced multi-threading for unprecedented performance in cryptographic processing. Built with cutting-edge technology, it achieves remarkable speeds while maintaining the highest security standards.
 
-### 🚀 Key Performance Metrics
+### 🚀 Performance Metrics
 
 | Operation | CPU Only | With GPU (RTX 3090) | Improvement |
 |-----------|----------|---------------------|-------------|
@@ -29,13 +29,20 @@
 - **Cross-Platform Support**: Windows and Linux compatibility
 - **Intelligent Optimization**: Automatic system tuning for peak performance
 
-## 📋 Prerequisites
+## 📋 System Requirements
 
-- **Python**: 3.11+ (recommended)
-- **GPU**: NVIDIA GPU with CUDA 11.0+ support (optional)
-- **RAM**: 8GB minimum (16GB+ recommended)
+### Minimum Requirements
+- **CPU**: Multi-core processor
+- **RAM**: 8GB
+- **Storage**: 1GB SSD
 - **OS**: Windows 10+ or Linux (Ubuntu 20.04+)
-- **Storage**: 1GB+ SSD recommended
+
+### Recommended Specifications
+- **CPU**: 8+ cores
+- **GPU**: NVIDIA RTX 3060 or better
+- **RAM**: 16GB+
+- **Storage**: 2GB+ NVMe SSD
+- **CUDA**: Version 11.0+
 
 ## 🛠️ Installation
 
@@ -83,18 +90,33 @@ coin/
 - **Local Operations**: No external server communication
 - **Privacy Focus**: No key storage unless explicitly requested
 
-## ⚡ Usage
+## ⚡ Usage Examples
 
 ```bash
-# Start the generator
+# Basic address generation
 ./scripts/run_coin.sh
-
-# Monitor progress in real-time
-tail -f logs/coin.log
 
 # Generate vanity address
 ./scripts/run_coin.sh --vanity="1BTC"
+
+# Monitor performance
+./scripts/run_coin.sh --monitor
+
+# Batch processing
+./scripts/run_coin.sh --batch=1000000
 ```
+
+## 📈 Performance Optimization
+
+### GPU Acceleration
+- Automatic CUDA thread optimization
+- Dynamic memory allocation
+- Parallel processing pipelines
+
+### CPU Optimization
+- Multi-threaded workload distribution
+- Cache-aware algorithms
+- Efficient memory management
 
 ## 🤝 Contributing
 
@@ -104,13 +126,31 @@ tail -f logs/coin.log
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+### Development Guidelines
+- Follow PEP 8 style guide
+- Write unit tests for new features
+- Document code changes
+- Update README for significant changes
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## ⚠️ Disclaimer
 
-This tool is for educational purposes only. Use responsibly and in compliance with all applicable laws and regulations.
+This tool is for educational purposes only. Use responsibly and in compliance with all applicable laws and regulations. The developers assume no liability for any misuse or damage caused by this software.
+
+## 🔍 Troubleshooting
+
+### Common Issues
+- CUDA initialization failures
+- Memory allocation errors
+- Performance bottlenecks
+
+### Solutions
+- Update NVIDIA drivers
+- Check system requirements
+- Monitor resource usage
 
 ---
 
