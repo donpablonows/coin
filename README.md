@@ -124,27 +124,27 @@ Coin continuously monitors system statistics, including GPU load, CPU utilizatio
 ### 1. **Time Complexity of Address Generation**
 Generating a single Bitcoin address involves several cryptographic steps: private key generation, public key derivation, and address encoding. The time complexity for private key generation (which is the most computationally intensive part) is:
 
-\[
-T_{\text{key}} = O(\log(n))
-\]
-where \(n = 2^{256}\) represents the total number of possible private keys. The enormous size of this search space makes brute-forcing a private key infeasible.
+```
+T_key = O(log(n))
+```
+where `n = 2^256` represents the total number of possible private keys. The enormous size of this search space makes brute-forcing a private key infeasible.
 
 For GPU-based systems, the time complexity reduces significantly as operations are parallelized:
 
-\[
-T_{\text{GPU}} = O\left(\frac{\log(n)}{p}\right)
-\]
-where \(p\) represents the number of GPU cores. This reduction in time complexity enables ultra-fast address generation.
+```
+T_GPU = O(log(n) / p)
+```
+where `p` represents the number of GPU cores. This reduction in time complexity enables ultra-fast address generation.
 
 ---
 
 ### 2. **Parallelization Efficiency**
 Parallelization efficiency is crucial for ensuring the system is fully utilizing all available computational resources. The efficiency can be measured as:
 
-\[
-E_p = \frac{T_{\text{address}}}{T_{\text{parallel}}}
-\]
-where \(E_p\) should approach 1 for perfect parallelism.
+```
+E_p = T_address / T_parallel
+```
+where `E_p` should approach 1 for perfect parallelism.
 
 ---
 
@@ -157,16 +157,16 @@ Let’s consider a high-end server with a **NVIDIA RTX 3090**:
 #### **Time to Generate 1 Billion Addresses**:
 For 1 billion addresses, the estimated time is:
 
-\[
-T_{\text{billion}} = \frac{10^9}{5 \times 10^9} = 0.2 \, \text{seconds}
-\]
+```
+T_billion = (10^9) / (5 × 10^9) = 0.2 seconds
+```
 
 #### **Total Power Consumption**:
 The power used for 1 billion addresses would be:
 
-\[
-P_{\text{total}} = 350W \times \frac{10^9}{5 \times 10^9} = 70 \, \text{W}
-\]
+```
+P_total = 350W × (10^9 / 5 × 10^9) = 70W
+```
 
 ---
 
