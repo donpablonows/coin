@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hyperquantum"
+version = "12.0.0"
+description = "Ultra-optimized Bitcoin address generator using CUDA and multi-threading"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+license = {file = "LICENSE"}
+keywords = ["bitcoin", "cryptocurrency", "cuda", "optimization"]
+authors = [
+    {name = "HyperQuantum Team", email = "team@hyperquantum.dev"}
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Security :: Cryptography",
+    "Topic :: System :: Hardware :: Parallel Computing"
+]
+dependencies = [
+    "numpy>=1.24.3,<2.0.0",
+    "numba>=0.57.1,<0.58.0",
+    "torch>=2.1.2,<2.2.0",
+    "fastecdsa>=2.3.0,<3.0.0",
+    "psutil>=5.9.8,<6.0.0",
+    "tqdm>=4.66.1,<5.0.0",
+    "pywin32>=306; platform_system == 'Windows'"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.0.0",
+    "mypy>=1.0.0",
+    "pylint>=2.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/hyperquantum"
+Documentation = "https://hyperquantum.readthedocs.io/"
+Repository = "https://github.com/yourusername/hyperquantum.git"
+Issues = "https://github.com/yourusername/hyperquantum/issues"
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pylint.messages_control]
+disable = ["C0111", "C0103"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --cov=src"
+testpaths = ["tests"] 
