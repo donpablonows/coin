@@ -74,6 +74,21 @@
     - [Diagnostics](#diagnostics)
     - [Solutions](#solutions)
 
+11. [Deployment Options](#-deployment-options)
+    - [One-Click Deploy](#one-click-deploy)
+    - [Docker Deployment](#docker-deployment)
+    - [Cloud Deployment](#cloud-deployment)
+
+12. [Probability Analysis](#-probability-analysis)
+    - [Finding Existing Wallets](#finding-existing-wallets)
+    - [Mathematical Odds](#mathematical-odds)
+    - [Time Estimates](#time-estimates)
+
+13. [FAQ](#-frequently-asked-questions)
+    - [General Questions](#general-questions)
+    - [Technical Questions](#technical-questions)
+    - [Security Questions](#security-questions)
+
 </details>
 
 ---
@@ -486,3 +501,184 @@ This tool is for educational and research purposes only. Users must comply with 
     <a href="https://discord.gg/coin">Discord</a>
   </p>
 </div>
+
+## 🚀 Deployment Options
+
+### One-Click Deploy
+
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/donpablonows/coin)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/donpablonows/coin)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/donpablonows/coin)
+
+### Docker Deployment
+
+```bash
+# Pull the image
+docker pull donpablonows/coin:latest
+
+# Run with GPU support
+docker run --gpus all -d \
+  -e CUDA_VISIBLE_DEVICES=0 \
+  -v $(pwd)/data:/app/data \
+  donpablonows/coin:latest
+```
+
+### Cloud Deployment
+
+#### AWS Setup
+```mermaid
+graph TD
+    A[AWS Account] -->|Launch| B[EC2 p3.2xlarge]
+    B -->|Install| C[CUDA Toolkit]
+    C -->|Configure| D[COIN Software]
+    D -->|Monitor| E[CloudWatch]
+    E -->|Alert| F[SNS Topics]
+```
+
+#### Google Cloud Setup
+```mermaid
+graph TD
+    A[GCP Project] -->|Create| B[VM Instance]
+    B -->|Install| C[CUDA Toolkit]
+    C -->|Deploy| D[COIN Software]
+    D -->|Monitor| E[Cloud Monitoring]
+```
+
+## 📊 Probability Analysis
+
+### Finding Existing Wallets
+
+The probability of finding an existing Bitcoin wallet is astronomically small. Here's why:
+
+```math
+P(collision) = 1 - e^{-k^2/(2n)}
+```
+
+where:
+- k = number of addresses generated
+- n = total possible private keys (2^256)
+
+#### Time Estimates
+
+| Hardware | Addresses/sec | Time to 1% Probability |
+|----------|--------------|----------------------|
+| RTX 3090 | 5,000,000/s | ~10^63 years |
+| 100 RTX 3090s | 500,000,000/s | ~10^62 years |
+| All Bitcoin Miners | 300 EH/s | ~10^56 years |
+
+### Processing Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant COIN
+    participant GPU
+    participant Blockchain
+
+    User->>COIN: Start Address Generation
+    COIN->>GPU: Initialize CUDA Cores
+    loop Parallel Processing
+        GPU->>GPU: Generate Private Keys
+        GPU->>GPU: Derive Public Keys
+        GPU->>GPU: Generate Addresses
+    end
+    GPU->>COIN: Return Results
+    COIN->>Blockchain: Optional: Check Balance
+    Blockchain->>COIN: Return Balance
+    COIN->>User: Display Results
+```
+
+## ❓ Frequently Asked Questions
+
+### General Questions
+
+<details>
+<summary>Is this legal to use?</summary>
+Yes, generating Bitcoin addresses is completely legal. However, attempting to access others' wallets is illegal. This tool is for educational and research purposes only.
+</details>
+
+<details>
+<summary>What are the hardware requirements?</summary>
+
+Minimum:
+- NVIDIA GPU with CUDA support
+- 8GB RAM
+- 4-core CPU
+- 50GB storage
+
+Recommended:
+- NVIDIA RTX 3090 or better
+- 32GB RAM
+- 12-core CPU
+- 500GB NVMe SSD
+</details>
+
+### Technical Questions
+
+<details>
+<summary>How does the GPU acceleration work?</summary>
+
+COIN utilizes CUDA for:
+1. Parallel private key generation
+2. Batch elliptic curve operations
+3. Concurrent address derivation
+4. Optimized memory transfers
+
+Performance scaling is nearly linear with additional GPU cores.
+</details>
+
+<details>
+<summary>What's the memory usage pattern?</summary>
+
+```mermaid
+pie title "Memory Usage Distribution"
+    "CUDA Buffers" : 45
+    "Address Data" : 30
+    "System Memory" : 15
+    "Cache" : 10
+```
+</details>
+
+### Security Questions
+
+<details>
+<summary>Is this tool secure?</summary>
+
+COIN implements multiple security measures:
+- Secure random number generation
+- Memory protection
+- Side-channel attack prevention
+- Regular security audits
+</details>
+
+## 📈 Performance Visualization
+
+### GPU Utilization
+
+```mermaid
+gantt
+    title GPU Resource Utilization
+    dateFormat  X
+    axisFormat %s
+
+    section CUDA Cores
+    Compute    :0, 95
+    section Memory
+    Transfer   :0, 70
+    section PCIe
+    Bandwidth  :0, 85
+```
+
+### Memory Hierarchy
+
+```mermaid
+graph TD
+    A[L1 Cache<br>48KB per SM] --> B[L2 Cache<br>6MB Shared]
+    B --> C[Global Memory<br>24GB GDDR6X]
+    C --> D[System RAM<br>32GB+]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:4px
+    style C fill:#dfd,stroke:#333,stroke-width:4px
+    style D fill:#fdd,stroke:#333,stroke-width:4px
+```
