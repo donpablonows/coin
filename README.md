@@ -28,7 +28,7 @@ With **real-time performance monitoring**, **intelligent thread management**, an
 
 To use Coin, you need:
 
-- **Python 3.11** (Recommended), or **Python 3.9/3.10**
+- **Python 3.11** (Recommended), or **Python 3.9/3.10)
 - **CUDA-Capable GPU** (Optional; if absent, CPU will be used)
   - **NVIDIA GPUs** (Recommended: GTX 10xx series or better)
 - **8GB+ RAM** (16GB+ recommended for larger datasets)
@@ -127,9 +127,12 @@ Coin continuously monitors system statistics, including GPU load, CPU utilizatio
 ## **📊 Performance Analysis**
 
 ### 1. **Time Complexity of Address Generation**
+
 Generating a single Bitcoin address involves several cryptographic steps: private key generation, public key derivation, and address encoding. The time complexity for private key generation (which is the most computationally intensive part) is:
 
-![Time Complexity Formula](https://quicklatex.com/latex3.f/quicklatex.com-0bcd1339354fa40a207c56f4a3b47d5c_l3.png)
+```latex
+T_{\text{key}} = O(\log(n))
+```
 
 Where `n = 2^256` represents the total number of possible private keys. The enormous size of this search space makes brute-forcing a private key infeasible.
 
@@ -144,8 +147,8 @@ Where `p` represents the number of GPU cores. This reduction in time complexity 
 ### 2. **Parallelization Efficiency**
 Parallelization efficiency is crucial for ensuring the system is fully utilizing all available computational resources. The efficiency can be measured as:
 
-```
-E_p = T_address / T_parallel
+```latex
+E_p = \frac{T_{\text{address}}}{T_{\text{parallel}}}
 ```
 
 Where `E_p` should approach 1 for perfect parallelism.
@@ -161,15 +164,15 @@ Let's consider a high-end server with a **NVIDIA RTX 3090**:
 #### **Time to Generate 1 Billion Addresses**:
 For 1 billion addresses, the estimated time is:
 
-```
-T_billion = (10^9) / (5 × 10^9) = 0.2 seconds
+```latex
+T_{\text{billion}} = \frac{10^9}{5 \times 10^9} = 0.2 \text{ seconds}
 ```
 
 #### **Total Power Consumption**:
 The power used for 1 billion addresses would be:
 
-```
-P_total = 350W × (10^9 / 5 × 10^9) = 70W
+```latex
+P_{\text{total}} = 350W \times \frac{10^9}{5 \times 10^9} = 70W
 ```
 
 ---
@@ -227,4 +230,3 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 ## **⚠️ Disclaimer**
 
 This tool is for **educational purposes only**. It should be used responsibly and in compliance with all local laws and regulations. **Misuse** of this tool could have legal consequences. **We do not take responsibility** for any damage or misuse resulting from the use of this tool.
-
