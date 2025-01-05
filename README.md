@@ -121,8 +121,7 @@ Coin continuously monitors system statistics, including GPU load, CPU utilizatio
 
 ## **📊 Performance Analysis**
 
-### **1. Time Complexity of Address Generation**
-
+### 1. **Time Complexity of Address Generation**
 Generating a single Bitcoin address involves several cryptographic steps: private key generation, public key derivation, and address encoding. The time complexity for private key generation (which is the most computationally intensive part) is:
 
 \[
@@ -137,24 +136,26 @@ T_{\text{GPU}} = O\left(\frac{\log(n)}{p}\right)
 \]
 where \(p\) represents the number of GPU cores. This reduction in time complexity enables ultra-fast address generation.
 
-### **2. Parallelization Efficiency**
+---
 
+### 2. **Parallelization Efficiency**
 Parallelization efficiency is crucial for ensuring the system is fully utilizing all available computational resources. The efficiency can be measured as:
 
 \[
 E_p = \frac{T_{\text{address}}}{T_{\text{parallel}}}
 \]
-where **\(E_p\)** should approach **1** for perfect parallelism.
+where \(E_p\) should approach 1 for perfect parallelism.
 
-### **3. Scalability and Resource Estimations**
+---
 
-Let’s consider a **high-end server** with a **NVIDIA RTX 3090**:
+### 3. **Scalability and Resource Estimations**
+Let’s consider a high-end server with a **NVIDIA RTX 3090**:
 
 - **Throughput**: \(5 \times 10^9\) addresses per second
 - **Power Consumption**: 350W
 
 #### **Time to Generate 1 Billion Addresses**:
-For **1 billion addresses**, the estimated time is:
+For 1 billion addresses, the estimated time is:
 
 \[
 T_{\text{billion}} = \frac{10^9}{5 \times 10^9} = 0.2 \, \text{seconds}
