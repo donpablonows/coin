@@ -24,9 +24,9 @@ With **real-time performance monitoring**, **intelligent thread management**, an
 
 ---
 
-## **🔧 Requirements**
+## **🔧 Prerequisites**
 
-To use Coin, you will need the following dependencies:
+To use Coin, you need:
 
 - **Python 3.11** (Recommended), or **Python 3.9/3.10**
 - **CUDA-Capable GPU** (Optional; if absent, CPU will be used)
@@ -47,8 +47,8 @@ cd Coin
 
 ### **Step 2: Run the setup script**
 ```bash
-chmod +x run_Coin.sh
-./run_Coin.sh
+chmod +x scripts/run_Coin.sh
+./scripts/run_Coin.sh
 ```
 
 The setup script will automatically:
@@ -56,6 +56,7 @@ The setup script will automatically:
 - Install necessary dependencies listed in `requirements.txt`
 - Download and set up the **Bitcoin address database**
 - Optimize system settings for performance
+- Run tests to ensure everything is working correctly
 
 ---
 
@@ -67,20 +68,24 @@ Coin/
 │   ├── __init__.py
 │   ├── core/
 │   │   ├── __init__.py
-│   │   ├── crypto.py      # Cryptographic operations (RSA, SHA256, etc.)
-│   │   ├── cuda.py        # CUDA optimizations for accelerated random number generation
-│   │   └── utils.py       # Utility functions for address encoding and decoding
+│   │   ├── crypto.py        # Core cryptographic operations
+│   │   ├── cuda.py         # CUDA optimizations
+│   │   └── utils.py        # Utility functions
 │   ├── database/
 │   │   ├── __init__.py
-│   │   └── manager.py     # Memory-mapped database operations for real-time address matching
+│   │   └── manager.py      # Database operations
 │   └── optimizer/
 │       ├── __init__.py
-│       ├── system.py      # System optimizations (CPU affinity, memory management)
-│       └── process.py     # Process and thread management for distributed workloads
-├── scripts/
-│   └── run_Coin.sh
+│       ├── system.py       # System optimizations
+│       └── process.py      # Process management
 ├── tests/
-│   └── __init__.py
+│   ├── __init__.py
+│   ├── conftest.py        # Pytest configuration
+│   ├── test_crypto.py     # Cryptographic tests
+│   ├── test_database.py   # Database tests
+│   └── test_optimizer.py  # Optimization tests
+├── scripts/
+│   └── run_Coin.sh        # Main setup and run script
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -95,7 +100,7 @@ Coin/
 
 ### **Start the generator**:
 ```bash
-./run_Coin.sh
+./scripts/run_Coin.sh
 ```
 
 ### **Monitor Progress**:
@@ -149,7 +154,7 @@ where `E_p` should approach 1 for perfect parallelism.
 ---
 
 ### 3. **Scalability and Resource Estimations**
-Let’s consider a high-end server with a **NVIDIA RTX 3090**:
+Let's consider a high-end server with a **NVIDIA RTX 3090**:
 
 - **Throughput**: \(5 \times 10^9\) addresses per second
 - **Power Consumption**: 350W
