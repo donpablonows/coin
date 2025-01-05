@@ -227,8 +227,4 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 ## **⚠️ Disclaimer**
 
 This tool is for **educational purposes only**. It should be used responsibly and in compliance with all local laws and regulations. **Misuse** of this tool could have legal consequences. **We do not take responsibility** for any damage or misuse resulting from the use of this tool.
-```
 
-### Key Points:
-- **Mathematical formulas** like `T_key = O(log(n))` are rendered as images using QuickLaTeX and displayed in the README.
-- The README also includes sections for setup, installation, performance analysis, and more.
