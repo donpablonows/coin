@@ -12,15 +12,15 @@ readonly BLUE='\033[0;34m'
 readonly NC='\033[0m'
 
 # Script paths
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -W 2>/dev/null || pwd)"
 readonly VENV_DIR="$SCRIPT_DIR/.venv"
 readonly REQUIREMENTS_FILE="$SCRIPT_DIR/requirements.txt"
 
 # Logging functions
-log_info() { echo -e "${BLUE}[*]${NC}$1"; }
-log_success() { echo -e "${GREEN}[+]${NC}$1"; }
-log_error() { echo -e "${RED}[!]${NC}$1"; }
-log_warning() { echo -e "${YELLOW}[!]${NC}$1"; }
+log_info() { echo -e "${BLUE}[*]${NC} $1"; }
+log_success() { echo -e "${GREEN}[+]${NC} $1"; }
+log_error() { echo -e "${RED}[!]${NC} $1"; }
+log_warning() { echo -e "${YELLOW}[!]${NC} $1"; }
 
 # Run command with timeout
 run_with_timeout() {
@@ -52,15 +52,50 @@ run_with_timeout() {
 kill_python() {
     log_info "Cleaning up Python processes..."
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
-        taskkill /F /IM python.exe /IM py.exe /IM pythonw.exe /IM pip.exe 2>/dev/null || true
-        taskkill /F /IM Python* 2>/dev/null || true
-        rmdir /S /Q %LOCALAPPDATA%\pip\Cache 2>/dev/null || true
+        taskkill //F //IM python.exe //IM py.exe //IM pythonw.exe //IM pip.exe 2>/dev/null || true
+        taskkill //F //IM Python* 2>/dev/null || true
+        rm -rf "$LOCALAPPDATA/pip/Cache" 2>/dev/null || true
     else
         pkill -9 python python3 pip pip3 2>/dev/null || true
         rm -rf ~/.cache/pip/* 2>/dev/null || true
     fi
     sleep 2  # Allow processes to terminate
     log_success "Cleanup complete"
+}
+
+# Install Python if not found
+install_python() {
+    log_info "Installing Python..."
+    if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+        # Download Python installer
+        local python_version="3.11.7"
+        local installer_url="https://www.python.org/ftp/python/${python_version}/python-${python_version}-amd64.exe"
+        local installer_path="$TEMP/python-${python_version}-amd64.exe"
+        
+        # Download installer
+        log_info "Downloading Python installer..."
+        curl -L -o "$installer_path" "$installer_url" || return 1
+        
+        # Install Python
+        log_info "Running installer..."
+        "$installer_path" /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 || return 1
+        
+        # Clean up
+        rm -f "$installer_path"
+        
+        # Update PATH
+        export PATH="/c/Program Files/Python311:/c/Program Files/Python311/Scripts:$PATH"
+        
+        # Verify installation
+        if ! python --version 2>/dev/null; then
+            log_error "Python installation failed"
+            return 1
+        fi
+    else
+        log_error "Automatic Python installation is only supported on Windows"
+        return 1
+    fi
+    log_success "Python installed successfully"
 }
 
 # Setup Python environment
@@ -71,14 +106,20 @@ setup_python() {
         export PYLAUNCHER_ALLOW_INSTALL=0
         
         # Find installed Python
-        for python_path in /c/Python{311,39,310}/python.exe; do
+        for python_path in "/c/Program Files/Python311/python.exe" "/c/Python311/python.exe" "/c/Python39/python.exe" "/c/Python310/python.exe"; do
             if [[ -x "$python_path" ]]; then
                 PYTHON="$python_path"
                 export PATH="${python_path%/*}:${python_path%/*}/Scripts:$PATH"
                 break
             fi
         done
-        PYTHON=${PYTHON:-py}
+        
+        # Install Python if not found
+        if [[ -z "$PYTHON" ]]; then
+            install_python || return 1
+            PYTHON="/c/Program Files/Python311/python.exe"
+        fi
+        
         export PATH="$APPDATA/Python/Python*/Scripts:$PATH"
     else
         PYTHON="$(which python3)"
@@ -156,7 +197,7 @@ tune_system() {
     
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
         # Set high-performance power plan
-        powercfg /s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c >/dev/null 2>&1 || true
+        powercfg //s 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c >/dev/null 2>&1 || true
         
         # Disable Windows Defender real-time scanning
         PowerShell.exe -Command "
