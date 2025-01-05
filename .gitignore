@@ -8,3 +8,4 @@ __pycache__/
 .env
 .venv/
 found.txt
+.lh
