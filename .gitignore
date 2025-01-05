@@ -1,11 +1,78 @@
-database/*
+# Python
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+*.py[cod]
+*$py.class
 *.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
 .env
-.venv/
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+.vs/
+
+# Logs and databases
+*.log
+*.sqlite
+database/
 found.txt
-.lh
+.lh/
+
+# CUDA
+.cuda-cache/
+*.ptx
+*.cubin
+
+# Test coverage
+.coverage
+htmlcov/
+.tox/
+.nox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Profiling
+*.prof
+*.lprof
+*.stats
+
+# Documentation
+docs/_build/
+docs/generated/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
