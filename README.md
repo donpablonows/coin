@@ -493,15 +493,6 @@ This tool is for educational and research purposes only. Users must comply with 
 
 ---
 
-<div align="center">
-  <b>Built with ❤️ by the COIN Team</b>
-  <p>
-    <a href="https://github.com/yourusername/coin">GitHub</a> •
-    <a href="https://coin.readthedocs.io">Documentation</a> •
-    <a href="https://discord.gg/coin">Discord</a>
-  </p>
-</div>
-
 ## 🚀 Deployment Options
 
 ### One-Click Deploy
@@ -749,3 +740,8 @@ flowchart TD
         K[Memory Dumps]
     end
 ```
+
+
+<div align="center">
+  <b>Built with ❤️ by the COIN Team</b>
+</div>
